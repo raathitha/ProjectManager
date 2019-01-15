@@ -1,0 +1,197 @@
+
+<div  class="container">
+<form class="form-horizontal" class="needs-validation" action="/action_page.php">
+    <div class="form-group">
+            <label class="control-label col-sm-2" >Project:</label>
+            <div class="input-group" style="width:50%">                           
+                                <input type="text" readonly class="form-control " [value]="projec" id="project" placeholder="Select a Project" >
+								<div class="clearfix"></div>
+								 <span class="input-group-btn">
+									<button class="btn btn-info" data-toggle="modal" data-target="#searchProject"  type="button">Search</button>
+                            </span>
+            </div>
+        </div>
+	    <div class="form-group">
+      <label class="control-label col-sm-2" for="task">Task:</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" style="width:50%"  [(ngModel)]="tsk.task_title" required id="task" placeholder="Enter Task Name" name="task">
+      </div>
+    </div>
+	<div class="form-group">
+		  <label class="control-label col-sm-2" for="enableParent">Mark as Parent Task:</label>
+		  <div class="col-sm-10"> 
+		  <div class="pull-left">
+			<input type="checkbox"  onchange="toggleParent();"  id="enableParent" name="enableParent"/>
+		  </div>		 
+		</div>
+      </div>
+	  <br/><br/><br/><br/>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="priority">Priority:</label>
+      <div class="col-sm-10">          
+			<output name="priorityOut" id="priorityOut">{{tsk.priority}}</output><span>&nbsp;&nbsp;&nbsp;<input type="range" min="0" max="30" name="priority" id="priority" class="slider" [(ngModel)]="tsk.priority"  value="0" oninput="priorityOut.value = priority.value">  </span>
+			
+      </div>
+    </div><br/><br/><br/><br/>
+	<div class="form-group">
+            <label class="control-label col-sm-2" >Parent Task:</label>
+            <div class="input-group" style="width:50%">                           
+                                <input type="text" readonly class="form-control " [value]="parentT" id="pTask" placeholder="" >
+								<div class="clearfix"></div>
+								 <span class="input-group-btn">
+									<button class="btn btn-info" data-toggle="modal" id="taskSearch" data-target="#searchTask"  type="button">Search</button>
+                            </span>
+            </div>
+        </div>
+		<div class="form-group">
+		 
+           <label class="control-label col-sm-2" for="stDate">Start Date:</label>
+      <div class="col-sm-10"> 			
+	  <input type="text" id="stDate" class="form-control " name="stDate" [value]="tsk.startdate"  [(ngModel)]="tsk.startdate" (change)="addStartDate(tsk.startdate)"  (ngModelChange)="addStartDate(tsk.startdate)" placeholder="Start Date"/>
+
+		  </div>
+		  
+		   <label class="control-label col-sm-2" for="edDate">End Date:</label>
+		   <div class="col-sm-10">
+		   	<input type="text" class="form-control " id="edDate" name="edDate"  [value]="tsk.enddate"   [(ngModel)]="tsk.enddate"(change)="addEndDate(tsk.enddate)"   (ngModelChange)="addEndDate(tsk.enddate)"  placeholder="End Date"/>
+
+		   </div>
+		   
+        </div>
+		<div class="form-group">
+            <label class="control-label col-sm-2" >User:</label>
+            <div class="input-group" style="width:50%">                           
+                                <input type="text" readonly class="form-control "  [value]="user" id="user" placeholder="" >
+								<div class="clearfix"></div>
+								 <span class="input-group-btn">
+									<button class="btn btn-info" data-toggle="modal"  id="userSearch" data-target="#searchUser"  type="button">Search</button>
+                            </span>
+            </div>
+        </div>
+<!-- Modal -->
+  <div class="modal fade" id="searchTask" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Tasks</h4>
+        </div>
+        <div class="modal-body" style=" overflow-y: auto;">
+		Select a Task :
+          <form>
+		  <ul class="list-group">
+		  <li class="list-group-item" *ngFor="let par of parents">
+		  <label class="radio-inline">
+			  <input type="radio" name="taskSel" [(ngModel)] = "value" (click)="addPar(par.parent_id,par.parent_task)" [value]="par.parent_task"  >{{par.parent_task}}
+			</label>
+			</li>
+		  
+		</ul>
+		  </form>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+    <div class="modal fade" id="searchProject" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Projects</h4>
+        </div>
+        <div class="modal-body" style=" overflow-y: auto;">
+		Select a Project :
+          <form>
+		  <ul class="list-group">
+		  <li class="list-group-item" *ngFor="let prj of projects">
+		  <label class="radio-inline">
+			  <input type="radio" name="projSel" [(ngModel)] = "value" (click)="addP(prj.project_id,prj.project)" [value]="prj.project_id"  >{{prj.project}}
+			</label>
+			</li>
+		 
+		</ul>
+		  </form>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  <div class="modal fade" id="searchUser" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">User</h4>
+        </div>
+        <div class="modal-body" style=" overflow-y: auto;">
+		Select a User :
+          <form>
+		  <ul class="list-group">
+		  <li class="list-group-item"  *ngFor="let urs of users">
+		  <label class="radio-inline">
+			  <input type="radio" name="userSel" [(ngModel)] = "value" (click)="addUsr(urs.user_id,urs.first_name)" [value]="urs.user_id"  >{{urs.first_name}} {{urs.last_name}}
+			</label>
+			</li>
+		  
+		</ul>
+		  </form>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+    <div class="form-group">        
+      <div class="col-sm-offset-2 col-sm-10">
+         <input type="button" value="Add" (click)="createTask(tsk)" style="width:67;height:34;" class="btn btn-success btn-sm" ng-show="Add" />    
+		<input type="button" value="Update" (click)="updateTask(tsk)" style="width:67;height:34;" class="btn btn-warning btn-sm" ng-show="Update" />    
+					<input type="Reset" value="Reset" value="Reset" style="width:67;height:34;" class="btn btn-primary btn-sm" ng-show="Reset" />    
+
+    
+      </div>
+    </div>
+  </form>
+  <div class="col-xs-12"><hr></div>
+    <input class="form-control" type="text" placeholder="Search" [(ngModel)]="searchString" name="searchString"  aria-label="Search"/><br/>
+	  <div class="form-group">        
+	<b>Sort:   </b>  <button type="button" (click)="sortProject('startdate')" class="btn btn-default">Start Date</button>
+	<button type="button" (click)="sortProject('enddate')" class="btn btn-default">End Date</button> 
+	<button type="button" (click)="sortProject('priority')" class="btn btn-default">Priority</button>
+	<button type="button" (click)="sortProject('status')" class="btn btn-default">Completed</button>
+
+	</div>
+	<table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Task</th>
+        <th>Parent</th>
+        <th>Priority</th>
+        <th>StartDate</th>
+        <th>EndDate</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let tsk of tasks |mysort:sortvar:asc |filter : 'task_title' : searchString; let i = index">
+        <td>{{tsk.task_title}}</td>
+        <td>{{tsk.parent_id}}</td>
+        <td>{{tsk.priority}}</td>
+		<td>{{tsk.startdate}}</td>
+		<td>{{tsk.enddate}}</td>
+        <td>
+		<div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-primary">Edit</button>
+		   <button type="reset" class="btn btn-danger" value="Reset">End</button>
+      </div>
+	  </td>
+      </tr>
+      
+    </tbody>
+  </table>
+ </div>

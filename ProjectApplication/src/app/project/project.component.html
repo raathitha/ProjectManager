@@ -1,0 +1,125 @@
+<div class="container">
+<form class="form-horizontal" name="projectVal" class="needs-validation" action="/action_page.php">
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="pName">Project:</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" required id="pName" [(ngModel)]="prj.project" placeholder="Enter Project Name" name="pName">
+      </div>
+    </div>
+	
+	<div class="form-group">
+		  <label class="control-label col-sm-2" for="enableDate">Set StartDate and EndDate:</label>
+		  <div class="">
+			<input type="checkbox"  onchange="toggleDateButton();"  id="enableDate" name="enableDate"/>
+		  </div>
+		  <div class="col-sm-10"> 
+		  <div class="">
+				<input type="text" id="stDate"  name="stDate" [value]="prj.startdate" disabled [(ngModel)]="prj.startdate" (change)="addStartDate(prj.startdate)"  (ngModelChange)="addStartDate(prj.startdate)" class="form-control pull-left" style="width:50%" placeholder="Start Date"/>
+			    <input type="text"  id="edDate" name="edDate"  [value]="prj.enddate" disabled  [(ngModel)]="prj.enddate"(change)="addEndDate(prj.enddate)"   (ngModelChange)="addEndDate(prj.enddate)"  class="form-control pull-right" style="width:50%" placeholder="End Date"/>
+		   </div>
+		</div>
+      </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2" for="priority">Priority:</label>
+      <div class="col-sm-10">          
+			<output name="priorityOut" id="priorityOut">{{prj.priority}}</output><span>&nbsp;&nbsp;&nbsp;<input type="range" min="0" max="30" name="priority" id="priority" class="slider" [(ngModel)]="prj.priority"  value="0" oninput="priorityOut.value = priority.value">  </span>
+			
+      </div>
+    </div>
+	<input type="hidden"  class="form-control " name="pickStart" id="pickStart" placeholder="" >
+<input type="hidden"  class="form-control " name="pickEnd" id="pickEnd" placeholder="" >
+
+	<br/>
+	<br/>
+	<br/>
+	<br/>
+	<br/>
+	<div class="form-group">
+            <label class="control-label col-sm-2" >Manager</label>
+            <div class="input-group" style="width:50%">                           
+                                <input type="text" readonly class="form-control " [value]="mvalue" id="manager" placeholder="" >
+								<div class="clearfix"></div>
+								 <span class="input-group-btn">
+									<button class="btn btn-info" data-toggle="modal" data-target="#searchManager"  type="button">Search</button>
+                            </span>
+            </div>
+        </div>
+<!-- Modal -->
+  <div class="modal fade" id="searchManager" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Managers</h4>
+        </div>
+        <div class="modal-body" style=" overflow-y: auto;">
+		Select a Manager :
+          <form>
+		  <ul class="list-group">
+		  <li class="list-group-item" *ngFor="let usr of users">
+		  <label class="radio-inline">
+			  <input type="radio" name="managerSel" [(ngModel)] = "value" (click)="updateManager(usr.employee_id)" [value]="usr.employee_id"  >{{usr.employee_id}}
+			</label>
+			</li>		  
+		</ul>
+		  </form>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+    <div class="form-group">        
+      <div class="col-sm-offset-2 col-sm-10">
+        <input type="button" value="Add" (click)="createProject(prj)" style="width:67;height:34;" class="btn btn-success btn-sm" ng-show="Add" />    
+		<input type="button" value="Update" (click)="updateProject(prj)" style="width:67;height:34;" class="btn btn-success btn-sm" ng-show="Add" />    
+					<input type="Reset" value="update" value="Reset" style="width:67;height:34;" class="btn btn-primary btn-sm" ng-show="Reset" />    
+
+      </div>
+    </div>
+  </form>
+  
+   <div class="col-xs-12"><hr></div>
+  
+    <input class="form-control" type="text" placeholder="Search" [(ngModel)]="searchString" name="searchString"  aria-label="Search"/><br/>
+	  <div class="form-group">        
+	<b>Sort:   </b> 
+	<input  type="button"  (click)="sortProject('startdate')" class="btn btn-default" value="Start Date"/>
+	<input  type="button"  (click)="sortProject('enddate')"  class="btn btn-default" value="End Date"/>
+	<input  type="button"  (click)="sortProject('priority')" class="btn btn-default" value="Priority"/>
+	<input  type="button"  (click)="sortProject('status')" class="btn btn-default" value="Completed"/>
+
+	</div>
+	<ul class="list-group">	
+		<li class="list-group-item" *ngFor="let prj of projects |mysort:sortvar:asc |filter : 'project' : searchString; let i = index">
+			<div class="row">
+				<div class="col-md-4">			
+					<div class="form-horizontal">     
+						<div>
+						<b>Project:</b>{{prj.project}}<br/>
+						<b>Manager:</b>{{prj.manager_id}}<br/>
+						<b>Priority:</b>{{prj.priority}}<br/>
+						</div>
+						<div class="pull-left">
+							<b>No. of Tasks:</b><br/>
+							<b>StartDate:</b>{{prj.startdate}}<br/>
+						</div>
+						<div class="pull-right">
+							<b>Completed:</b>{{prj.status}}<br/>
+							<b>EndDate:</b>{{prj.enddate}}<br/>
+						</div>
+					</div>
+				</div>
+				
+				<div class="col-md-4">
+				  <div class="form-horizontal">  
+										<button type="button" class="btn btn-danger" (click)="deleteProject(prj)" style="width:60;height:30;">Delete</button><br/>
+						<button type="button" class="btn btn-primary" (click)="editProject(prj)" style="width:60;height:30;">Update</button><br/>
+					</div>
+				</div>				
+			</div>
+		</li>
+		</ul>
+  </div>
