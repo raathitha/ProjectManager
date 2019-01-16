@@ -36,5 +36,10 @@ public class ProjectDaoImpl implements ProjectDao {
 		Project s = entityManager.find(Project.class,id);
         entityManager.remove(s);
 	}
+
+	@Override
+	public String getNoOfTasks(Integer id) {
+		return entityManager.createQuery("select count(*) from Task tk where project_id="+id).getSingleResult().toString();
+	}
 	
 }

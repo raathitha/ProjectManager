@@ -146,7 +146,7 @@ public class Task {
 	    {
 	        if (this == obj)
 	            return true;
-	        if (obj == null)
+	       /* if (obj == null)
 	            return false;
 	        if (getClass() != obj.getClass())
 	            return false;
@@ -204,7 +204,7 @@ public class Task {
 	            if (other.employee_id != null)
 	                return false;
 	        } else if (!employee_id.equals(other.employee_id))
-	            return false;
+	            return false;*/
 	        return true;
 	    }
 	    @Override

@@ -60,7 +60,7 @@ public class ParentTask {
 	    {
 	        if (this == obj)
 	            return true;
-	        if (obj == null)
+	        /*if (obj == null)
 	            return false;
 	        if (getClass() != obj.getClass())
 	            return false;
@@ -76,7 +76,7 @@ public class ParentTask {
 	            if (other.parent_task != null)
 	                return false;
 	        } else if (!parent_task.equals(other.parent_task))
-	            return false;
+	            return false;*/
 	        
 	        return true;
 	    }

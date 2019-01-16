@@ -73,8 +73,8 @@
 
     <div class="form-group">        
       <div class="col-sm-offset-2 col-sm-10">
-        <input type="button" value="Add" (click)="createProject(prj)" style="width:67;height:34;" class="btn btn-success btn-sm" ng-show="Add" />    
-		<input type="button" value="Update" (click)="updateProject(prj)" style="width:67;height:34;" class="btn btn-success btn-sm" ng-show="Add" />    
+        <input type="button" value="Add" *ngIf="addButton" (click)="createProject(prj)" style="width:67;height:34;" class="btn btn-success btn-sm" ng-show="Add" />    
+		<input type="button" value="Update" *ngIf="!addButton" (click)="updateProject(prj)" style="width:67;height:34;" class="btn btn-success btn-sm" ng-show="Add" />    
 					<input type="Reset" value="update" value="Reset" style="width:67;height:34;" class="btn btn-primary btn-sm" ng-show="Reset" />    
 
       </div>
@@ -95,30 +95,31 @@
 	<ul class="list-group">	
 		<li class="list-group-item" *ngFor="let prj of projects |mysort:sortvar:asc |filter : 'project' : searchString; let i = index">
 			<div class="row">
-				<div class="col-md-4">			
-					<div class="form-horizontal">     
-						<div>
-						<b>Project:</b>{{prj.project}}<br/>
-						<b>Manager:</b>{{prj.manager_id}}<br/>
-						<b>Priority:</b>{{prj.priority}}<br/>
-						</div>
-						<div class="pull-left">
-							<b>No. of Tasks:</b><br/>
-							<b>StartDate:</b>{{prj.startdate}}<br/>
-						</div>
-						<div class="pull-right">
-							<b>Completed:</b>{{prj.status}}<br/>
-							<b>EndDate:</b>{{prj.enddate}}<br/>
-						</div>
+			<div class="col-md-4">		
+			<table >
+			<tr class="pull-left"><b>Project:</b>{{prj.project}}</tr>
+			<tr class="pull-left"><b>Manager:</b>{{prj.manager_id}}</tr>
+			<tr>&nbsp;</tr>
+			<tr><td  class="pull-left"><b>No. of Tasks:</b>{{prj.taskcount}}</td><td>&nbsp;</td><td>&nbsp;</td><td  class="pull-right"><b>Completed:</b>{{prj.status}}</td></tr>
+			<tr></tr><tr><td  class="pull-left"><b>StartDate:</b>{{prj.startdate}}</td><td>&nbsp;</td><td>&nbsp;</td><td  class="pull-right"><b>EndDate:</b>{{prj.enddate}}</td></tr>
+			</table>
+			
+				
+						
+			</div>
+			<div class="col-md-4">			
+					<div class="form-horizontal">   
+							<div class="row"><b>Priority</b></div><div class="row">&nbsp;</div><div class="row">{{prj.priority}}</div>
 					</div>
 				</div>
 				
-				<div class="col-md-4">
-				  <div class="form-horizontal">  
-										<button type="button" class="btn btn-danger" (click)="deleteProject(prj)" style="width:60;height:30;">Delete</button><br/>
-						<button type="button" class="btn btn-primary" (click)="editProject(prj)" style="width:60;height:30;">Update</button><br/>
+			<div class="col-md-4">
+				  <div class="form-horizontal"> 
+						<div class="row">				  
+						<button type="button" class="btn btn-danger" (click)="deleteProject(prj)" style="width:60;height:30;">Delete</button>
+						</div><div class="row"><button type="button" class="btn btn-primary" (click)="editProject(prj)" style="width:60;height:30;">Update</button></div>
 					</div>
-				</div>				
+				</div>
 			</div>
 		</li>
 		</ul>

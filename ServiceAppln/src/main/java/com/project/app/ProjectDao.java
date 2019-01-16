@@ -7,5 +7,6 @@ public interface ProjectDao {
 	public Project getProjectById(Integer id);
     public List<Project> getAllProjects();    
     public void updateProject(Project project);    
-    public void deleteProject(Integer id);
+    public void deleteProject(Integer id);  
+    public String getNoOfTasks(Integer id);
 }

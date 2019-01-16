@@ -43,16 +43,21 @@ public class Project {
 	@Column(name = "MANAGER_ID")
 	public Integer manager_id;
 	
+	@Column(name = "STATUS")
+	public String status;
+	
 	 public Project()
 	    {
 	        super();
 	    }
-	    public Project(String project,Timestamp startdate,Timestamp enddate,Integer priority, Integer project_id,Integer manager_id)
+	    public Project(String project,Timestamp startdate,Timestamp enddate,Integer priority, Integer project_id,Integer manager_id,String status)
 	    {
 	        super();
+	        this.project_id = project_id;
 	        this.project = project;
 		    this.startdate = startdate;
 	        this.enddate = enddate;
+	        this.status = status;
 	        this.priority = priority;
 	        this.manager_id = manager_id;
 	    }
@@ -114,7 +119,7 @@ public class Project {
 	    {
 	        if (this == obj)
 	            return true;
-	        if (obj == null)
+	       /* if (obj == null)
 	            return false;
 	        if (getClass() != obj.getClass())
 	            return false;
@@ -154,7 +159,7 @@ public class Project {
 	            if (other.manager_id != null)
 	                return false;
 	        } else if (!manager_id.equals(other.manager_id))
-	            return false;
+	            return false;*/
 	       
 	        
 	        return true;

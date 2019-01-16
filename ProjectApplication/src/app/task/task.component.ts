@@ -15,6 +15,7 @@ parents:any[];
 
 parentsObj:any[];
 sortvar ='task_id';
+addButton=true;
 projec='';
 startddate : any; 
 parentT ='';
@@ -136,18 +137,33 @@ addP(mValues:any,textTo :any){
 editTask(task:any){
 	alert("edit triggered");
 	if(task.parent_id){
-		this.http.get(this.upTaskURL+'/'+task.task_id,this.httpOptions2)  
+		this.http.get(this.gettaskURL+'/'+task.task_id,this.httpOptions2)  
       .subscribe(response => {  
-        this.tasks = response as any;
+        this.tsk = response as any;
 		//console.log(this.prj);
       });  
 	}else{
-		this.http.get(this.upTaskURL+'/'+task.task_id,this.httpOptions2)  
+		this.http.get(this.gettaskURL+'/'+task.task_id,this.httpOptions2)  
       .subscribe(response => {  
-        this.tasks = response as any;  
+        this.tsk = response as any;  
 		//console.log(this.prj);
       }); 
 	}
+	this.addButton = false;
 }
+
+deleteTask(task:any){
+	this.http.delete(this.delTaskURL + '/' + task.task_id)  
+      .subscribe(response => {  
+        let index = this.tasks.indexOf(task);  
+        this.tasks.splice(index, 1);  
+      });    	
+	alert("Task Deleted");
+}
+
+sortTask(sortValue:any){
+	 this.sortvar = sortValue;	 
+}
+
 
 }

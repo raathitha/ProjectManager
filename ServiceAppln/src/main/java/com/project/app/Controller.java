@@ -17,8 +17,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 public class Controller {
-	@Autowired
-    private BookDAOImpl bookDAOImpl;
+	
 	@Autowired
     private ParentTaskDaoImpl parentTaskDAOImpl;
 	@Autowired
@@ -29,85 +28,7 @@ public class Controller {
     private UserDaoImpl userDaoImpl;
 	
 	
-    /*** Creating a new Book ***/
-    @RequestMapping(value="/create", method=RequestMethod.POST, 
-            produces="application/json", consumes="application/json")
-    public ResponseEntity<Void> createBook(@RequestBody Book book, UriComponentsBuilder ucBuilder)
-    {
-           System.out.println("Creating User " + book.getTitle());
-        
-        if (bookDAOImpl.getBookById(book.getBookid())!=null) {
-            System.out.println("A Book with id " + book.getBookid() + " already exist");
-            return new ResponseEntity<Void>(HttpStatus.CONFLICT);
-        }else{ 
-	        bookDAOImpl.createBook(book);	 
-	        HttpHeaders headers = new HttpHeaders();
-	        headers.setLocation(ucBuilder.path("/book/{id}").buildAndExpand(book.getBookid() ).toUri());
-	        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
-        }
-    }
-    
-    /*** Retrieve a single Book ***/
-    @RequestMapping(value="/book/{id}",method=RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Book> getBookById(@PathVariable("id") long id)
-    {
-        Book book = bookDAOImpl.getBookById(id);
-        if (book == null) {
-            System.out.println("Book with id " + id + " not found");
-            return new ResponseEntity<Book>(HttpStatus.NOT_FOUND);
-        }else{
-        	return new ResponseEntity<Book>(book, HttpStatus.OK);
-        }
-    }
-    
-    /*** Retrieve all Books ***/
-    @RequestMapping(value="/books", method=RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Book>> getAllBooks()
-    {
-        List bookList = bookDAOImpl.getAllBooks();
-        if(bookList.isEmpty()){
-            return new ResponseEntity<List<Book>>(HttpStatus.NO_CONTENT);
-        }else{
-        	return new ResponseEntity<List<Book>>(bookList, HttpStatus.OK);
-        }
-    }
-    /*** Retrieve all Books ***/
-    @RequestMapping(value="/", method=RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Book>>  getAllBooksHome()
-    {
-    	 List bookList = bookDAOImpl.getAllBooks();
-         if(bookList.isEmpty()){
-             return new ResponseEntity<List<Book>>(HttpStatus.NO_CONTENT);
-         }else{
-        	 return new ResponseEntity<List<Book>>(bookList, HttpStatus.OK);
-         }
-    }
-    /*** Update a Book ***/
-    @RequestMapping(value="/update", method=RequestMethod.PUT, consumes="application/json",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Book>  updateBook(@RequestBody Book book)
-    {
-    	 if (bookDAOImpl.getBookById(book.getBookid())==null) {
-             System.out.println("Book with id " + book.getBookid() + " not found");
-             return new ResponseEntity<Book>(HttpStatus.NOT_FOUND);
-         }else{
-        	 bookDAOImpl.updateBook(book);
-        	 return new ResponseEntity<Book>(book, HttpStatus.OK);
-         }
-    }
-    
-    /*** Delete a Book ***/
-    @RequestMapping(value="/delete/{id}",method = RequestMethod.DELETE)
-    public ResponseEntity<Void>  deleteBook(@PathVariable("id") long id)
-    {
-    	if (bookDAOImpl.getBookById(id)==null) {
-            System.out.println("Book with id " + id + " not found");
-            return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
-        }else{
-
-            bookDAOImpl.deleteBook(id);
-            return new ResponseEntity<Void>(HttpStatus.OK);
-        }
-    }
+   
     
     //--------------------------------------------------------Create-----------------------------------------------------------
     /*** Creating a new ParentTask ***/
@@ -229,6 +150,26 @@ public class Controller {
         	return new ResponseEntity<List<Project>>(projList, HttpStatus.OK);
         }
     }
+    
+    /*** taskCount ***/
+
+    @CrossOrigin(origins = "http://localhost:4201")
+    @RequestMapping(value="/taskCount/{id}",method = RequestMethod.GET)
+    public ResponseEntity<String>  getCount(@PathVariable("id") Integer id)
+    {
+    	if (projectDaoImpl.getProjectById(id)==null) {
+            System.out.println("Parent with id " + id + " not found");
+            return new ResponseEntity<String>("No Task", HttpStatus.OK);
+        }else{
+
+        	String count = projectDaoImpl.getNoOfTasks(id);
+        	if(count =="0") {
+        		count = "No Task";
+        	}
+            return new ResponseEntity<String>(count,HttpStatus.OK);
+        }
+    }
+    
     
     /*** Retrieve all User ***/
 

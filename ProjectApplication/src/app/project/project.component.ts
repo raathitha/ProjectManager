@@ -8,10 +8,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class ProjectComponent implements OnInit {
 projects: any[];
+projects2: any[];
 users: any[];
 sortvar ='project_id';
 mvalue='';
 startddate : any;
+addButton=true;
 endate : any;
 private projectURL = 'http://localhost:8156/projects'; 
 private getprojectURL = 'http://localhost:8156/project'; 
@@ -20,6 +22,7 @@ private closeprojectURL = 'http://localhost:8156/closeProject';
 private addProjectURL = 'http://localhost:8156/createProject';  
 private upProjectURL = 'http://localhost:8156/updateProject'; 
 private delProjectURL = 'http://localhost:8156/deleteProject'; 
+private taskCount = 'http://localhost:8156/taskCount'; 
  httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' ,'Access-Control-Allow-Origin': '*'})
 };
@@ -32,10 +35,17 @@ private delProjectURL = 'http://localhost:8156/deleteProject';
 
   ngOnInit() {
 	  this.http.get(this.projectURL)  
-      .subscribe(response => {  
-	  this.projects = response as any;  
+      .subscribe(response => {    
 	  
-        
+	    for(let i=0;i<response.length;i++){
+			let gfk = response[i];
+				this.http.get(this.taskCount+'/'+gfk.project_id,this.httpOptions2)  
+		  .subscribe(response2 => {  
+			response[i].taskcount = response2;  
+		
+			});
+		}
+		this.projects = response as any;  
       });
 	  this.http.get(this.userURL)  
       .subscribe(response => {  
@@ -60,13 +70,20 @@ private delProjectURL = 'http://localhost:8156/deleteProject';
 		project.manager_id=this.mvalue;
 		project.enddate=this.endate;
 		project.startdate=this.startddate;
-		 console.log(project);
 	
 	this.http.post(this.addProjectURL, JSON.stringify(project),this.httpOptions)  
     .subscribe(response => {  
 		 this.http.get(this.projectURL)  
       .subscribe(response => {  
-        this.projects = response as any;  
+			for(let i=0;i<response.length;i++){
+			let gfk = response[i];
+				this.http.get(this.taskCount+'/'+gfk.project_id,this.httpOptions2)  
+		  .subscribe(response2 => {  
+			response[i].taskcount = response2;  
+		
+			});
+		}
+		this.projects = response as any;  
       });   
     });  
 	//console.log(project);	
@@ -79,6 +96,8 @@ editProject(project:any){
         this.prj = response;  
 		//console.log(this.prj);
       });  
+	  
+	this.addButton = false;
 }
 
 updateProject(project:any){
@@ -86,7 +105,15 @@ updateProject(project:any){
     .subscribe(response => {
 		 this.http.get(this.projectURL)  
       .subscribe(response => {  
-        this.projects = response as any;    
+        for(let i=0;i<response.length;i++){
+			let gfk = response[i];
+				this.http.get(this.taskCount+'/'+gfk.project_id,this.httpOptions2)  
+		  .subscribe(response2 => {  
+			response[i].taskcount = response2;  
+		
+			});
+		}
+		this.projects = response as any;     
       });
     }); 	
 	alert("Project Updated");

@@ -48,7 +48,7 @@ public class User {
     {
         super();
     }
-    public User(Integer employee_id,String first_name, String last_name,Integer project_id,Integer task_id)
+    public User(Integer user_id,Integer employee_id,String first_name, String last_name,Integer project_id,Integer task_id)
     {
         super();
         this.employee_id = employee_id;
@@ -56,6 +56,7 @@ public class User {
         this.last_name = last_name;
         this.project_id = project_id;
         this.task_id = task_id;
+        this.user_id = user_id;
     }
  
     public Integer getUser_id() {
@@ -111,7 +112,7 @@ public class User {
     {
         if (this == obj)
             return true;
-        if (obj == null)
+        /*if (obj == null)
             return false;
         if (getClass() != obj.getClass())
             return false;
@@ -145,7 +146,7 @@ public class User {
             if (other.last_name != null)
                 return false;
         } else if (!last_name.equals(other.last_name))
-            return false;
+            return false;*/
        
        
         

@@ -14,7 +14,7 @@
 	    <div class="form-group">
       <label class="control-label col-sm-2" for="task">Task:</label>
       <div class="col-sm-10">
-        <input type="text" class="form-control" style="width:50%"  [(ngModel)]="tsk.task_title" required id="task" placeholder="Enter Task Name" name="task">
+        <input type="text" class="form-control" style="width:50%"  [(ngModel)]="tsk.task_Title" required id="task" placeholder="Enter Task Name" name="task">
       </div>
     </div>
 	<div class="form-group">
@@ -149,8 +149,8 @@
   </div>
     <div class="form-group">        
       <div class="col-sm-offset-2 col-sm-10">
-         <input type="button" value="Add" (click)="createTask(tsk)" style="width:67;height:34;" class="btn btn-success btn-sm" ng-show="Add" />    
-		<input type="button" value="Update" (click)="updateTask(tsk)" style="width:67;height:34;" class="btn btn-warning btn-sm" ng-show="Update" />    
+         <input type="button" value="Add" *ngIf="addButton" (click)="createTask(tsk)" style="width:67;height:34;" class="btn btn-success btn-sm" ng-show="Add" />    
+		<input type="button" value="Update" *ngIf="!addButton" (click)="updateTask(tsk)" style="width:67;height:34;" class="btn btn-warning btn-sm" ng-show="Update" />    
 					<input type="Reset" value="Reset" value="Reset" style="width:67;height:34;" class="btn btn-primary btn-sm" ng-show="Reset" />    
 
     
@@ -160,10 +160,10 @@
   <div class="col-xs-12"><hr></div>
     <input class="form-control" type="text" placeholder="Search" [(ngModel)]="searchString" name="searchString"  aria-label="Search"/><br/>
 	  <div class="form-group">        
-	<b>Sort:   </b>  <button type="button" (click)="sortProject('startdate')" class="btn btn-default">Start Date</button>
-	<button type="button" (click)="sortProject('enddate')" class="btn btn-default">End Date</button> 
-	<button type="button" (click)="sortProject('priority')" class="btn btn-default">Priority</button>
-	<button type="button" (click)="sortProject('status')" class="btn btn-default">Completed</button>
+	<b>Sort:   </b>  <button type="button" (click)="sortTask('startdate')" class="btn btn-default">Start Date</button>
+	<button type="button" (click)="sortTask('enddate')" class="btn btn-default">End Date</button> 
+	<button type="button" (click)="sortTask('priority')" class="btn btn-default">Priority</button>
+	<button type="button" (click)="sortTask('status')" class="btn btn-default">Completed</button>
 
 	</div>
 	<table class="table table-striped">
@@ -178,16 +178,16 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let tsk of tasks |mysort:sortvar:asc |filter : 'task_title' : searchString; let i = index">
-        <td>{{tsk.task_title}}</td>
+      <tr *ngFor="let tsk of tasks |mysort:sortvar:asc |filter : 'task_Title' : searchString; let i = index">
+        <td>{{tsk.task_Title}}</td>
         <td>{{tsk.parent_id}}</td>
         <td>{{tsk.priority}}</td>
 		<td>{{tsk.startdate}}</td>
 		<td>{{tsk.enddate}}</td>
         <td>
 		<div class="col-sm-offset-2 col-sm-10">
-        <button type="submit" class="btn btn-primary">Edit</button>
-		   <button type="reset" class="btn btn-danger" value="Reset">End</button>
+        <button type="submit"  (click)="editTask(tsk)" class="btn btn-primary">Edit</button>
+		   <button type="reset" (click)="deleteTask(tsk)" class="btn btn-danger" value="Reset">End</button>
       </div>
 	  </td>
       </tr>
